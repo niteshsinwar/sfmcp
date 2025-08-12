@@ -47,15 +47,15 @@ Quit & reopen Claude Desktop.
 
 ---
 
-## Windows (PowerShell) — Quick Start
-```powershell
+## Windows (command Prompt) — Quick Start
+```bash
 # 1) Clone
 git clone https://github.com/niteshsinwar/sfmcp
 cd sfmcp
 
 # 2) Create & activate venv
 py -3.11 -m venv venv
-.venv\Scripts\Activate.ps1
+venv/Scripts/activate.bat
 
 # 3) Install deps
 pip install -r requirements.txt
