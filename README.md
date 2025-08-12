@@ -1,62 +1,34 @@
-# Salesforce MCP Server — Local Setup (macOS & Windows)
+# Salesforce MCP Server — Quick Setup (macOS & Windows)
 
-A minimal, local **Model Context Protocol (MCP)** server tailored for Salesforce workflows. This guide walks you from **clone → Python → virtual env → dependencies → Claude Desktop config → test** on both macOS and Windows.
+Straightforward steps from **clone → venv → install → Claude config**. Follow exactly.
 
 ---
 
 ## Prerequisites
-
-- **Python 3.11+** 
-- **Claude Desktop** installed
-- **Git**
-
-
-## 1) Clone the repository
-
-```bash
-git clone https://github.com/niteshsinwar/sfmcp
-```
-
-
-## 2) Create a virtual environment
-
-### macOS / Linux (bash/zsh)
-```bash
-python3.11 -m venv venv
-# You may keep the venv deactivated; we show both patterns below.
-```
-
-### Windows (PowerShell)
-```powershell
-py -3.11 -m venv venv
-# You may keep the venv deactivated; we show both patterns below.
-```
-
-
-## 3) Install dependencies
-
-```bash
-# macOS / Linux
-pip3 install -r requirements.txt
-```
-
-```powershell
-# Windows (PowerShell)
-pip install -r requirements.txt
-```
+- Python **3.11+**
+- Claude Desktop
+- (Optional) Git
 
 ---
 
-## 6) Claude Desktop configuration
+## macOS / Linux — Quick Start
+```bash
+# 1) Clone
+git clone https://github.com/niteshsinwar/sfmcp && cd sfmcp
 
-Claude Desktop reads a JSON file at:
+# 2) Create & activate venv
+python3.11 -m venv venv
+source venv/bin/activate
 
-- **macOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+# 3) Install deps
+pip install -r requirements.txt
 
-### A) macOS (bash wrapper with activation — **works with spaces in path**)
+# 4) (Optional) Test run
+python -m app.main --mcp-stdio
+```
 
-Replace the path with your actual absolute path to the project root.
+### Add Claude config (UI path)
+Claude Desktop → **Settings → Developer → Edit config**, paste this and replace `/ABS/PATH/TO/sfmcp` with your absolute path:
 
 ```json
 {
@@ -71,8 +43,29 @@ Replace the path with your actual absolute path to the project root.
   }
 }
 ```
+Quit & reopen Claude Desktop.
 
-### B) Windows (activate then run — if you prefer)
+---
+
+## Windows (PowerShell) — Quick Start
+```powershell
+# 1) Clone
+git clone https://github.com/niteshsinwar/sfmcp
+cd sfmcp
+
+# 2) Create & activate venv
+py -3.11 -m venv venv
+.env\Scripts\Activate.ps1
+
+# 3) Install deps
+pip install -r requirements.txt
+
+# 4) (Optional) Test run
+python -m app.main --mcp-stdio
+```
+
+### Add Claude config (UI path)
+Claude Desktop → **Settings → Developer → Edit config**, paste this and replace `C:\ABS\PATH\TO\sfmcp` with your absolute path:
 
 ```json
 {
@@ -82,27 +75,17 @@ Replace the path with your actual absolute path to the project root.
       "args": [
         "/d",
         "/c",
-        "cd /d \"C:\\ABS\\PATH\\TO\\sfmcp\" && call venv\\Scripts\\activate && python -m app.main --mcp-stdio"
+        "cd /d "C:\\ABS\\PATH\\TO\\sfmcp" && call venv\\Scripts\\activate && python -m app.main --mcp-stdio"
       ]
     }
   }
 }
 ```
-
-After saving the config: **Quit and reopen Claude Desktop**.
-
----
-
-
-you’re good—Claude will attach when it loads your server.
+Quit & reopen Claude Desktop.
 
 ---
 
-
-
----
-
-## 10) What’s next
+## What’s next
 
 - Add more tools in `app/mcp/tools/*.py` and they’ll auto-register.
 - Keep dependencies pinned in `requirements.txt` to avoid breakage.
