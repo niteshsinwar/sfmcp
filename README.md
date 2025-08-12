@@ -55,7 +55,7 @@ cd sfmcp
 
 # 2) Create & activate venv
 py -3.11 -m venv venv
-.env\Scripts\Activate.ps1
+.venv\Scripts\Activate.ps1
 
 # 3) Install deps
 pip install -r requirements.txt
