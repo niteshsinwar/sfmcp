@@ -7,7 +7,7 @@ Straightforward steps from **clone → venv → install → Claude config**. Fol
 ## Prerequisites
 - Python **3.11+**
 - Claude Desktop
-- (Optional) Git
+- Git
 
 ---
 
