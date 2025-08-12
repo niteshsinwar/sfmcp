@@ -65,18 +65,13 @@ python -m app.main --mcp-stdio
 ```
 
 ### Add Claude config (UI path)
-Claude Desktop → **Settings → Developer → Edit config**, paste this and replace `C:\ABS\PATH\TO\sfmcp` with your absolute path:
+Claude Desktop → **Settings → Developer → Edit config**, paste this and replace `C:\\to\\your\\actual\\path\\sfmcp` with your absolute path:
 
 ```json
 {
   "mcpServers": {
     "salesforce-mcp-server-local": {
-      "command": "cmd.exe",
-      "args": [
-        "/d",
-        "/c",
-        "cd /d "C:\\ABS\\PATH\\TO\\sfmcp" && call venv\\Scripts\\activate && python -m app.main --mcp-stdio"
-      ]
+      "command": "C:\\to\\your\\actual\\path\\sfmcp\\start_mcp.bat"
     }
   }
 }
