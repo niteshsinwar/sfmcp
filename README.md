@@ -54,8 +54,8 @@ git clone https://github.com/niteshsinwar/sfmcp
 cd sfmcp
 
 # 2) Create & activate venv
-py -3.11 -m venv venv
-venv/Scripts/activate.bat
+py -3.1x -m venv venv
+venv\Scripts\activate
 
 # 3) Install deps
 pip install -r requirements.txt
