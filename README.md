@@ -106,4 +106,3 @@ you’re good—Claude will attach when it loads your server.
 
 - Add more tools in `app/mcp/tools/*.py` and they’ll auto-register.
 - Keep dependencies pinned in `requirements.txt` to avoid breakage.
-- Optionally add an SSE mode if you want to test with Postman (HTTP), otherwise STDIO is perfect for Claude Desktop.
