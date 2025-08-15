@@ -190,4 +190,4 @@ Every new tool must have a corresponding test scenario. We maintain high reliabi
 **NiteshSinwar (Myridius)** — caretakers of this chaos.  
 Repo: https://github.com/niteshsinwar/sfmcp
 
-> If this saved you an hour, star the repo ⭐. If it saved your sprint… we accept coffee.
+> If this saved you an hour, star the repo ⭐. 
