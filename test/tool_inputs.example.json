@@ -1,0 +1,11 @@
+{
+  "salesforce_production_login": {
+    "selected_user": "PUT_YOUR_USERNAME_HERE"
+  },
+  "salesforce_sandbox_login": {
+    "selected_user": "PUT_YOUR_SANDBOX_USERNAME_HERE"
+  },
+  "execute_soql_query": {
+    "soql": "SELECT Id, Name FROM Account LIMIT 1"
+  }
+}

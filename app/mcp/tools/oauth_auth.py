@@ -8,6 +8,7 @@ import psutil  # Added for port management
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs, urlencode
 from typing import Dict, Any
+import socket
 
 from app.mcp.server import register_tool
 
@@ -46,6 +47,17 @@ class SalesforceCallbackHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+class ReusableDualStackHTTPServer(HTTPServer):
+    allow_reuse_address = True
+    address_family = socket.AF_INET6  # bind IPv6, then allow v4-mapped
+    def server_bind(self):
+        try:
+            # Accept both IPv6 and IPv4 on the same socket (if OS supports it)
+            self.socket.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_V6ONLY, 0)
+        except Exception:
+            pass
+        super().server_bind()
+        
 def _free_port(port: int) -> None:
     """Free up the specified port by terminating any processes using it"""
     try:
@@ -62,12 +74,36 @@ def _free_port(port: int) -> None:
     except Exception:
         pass  # Ignore any errors in port cleanup
 
+
 def _start_callback_server(port: int = 1717):
-    """Start callback server after ensuring port is free"""
-    # Automatically free the port before starting server
+    """Start callback server after ensuring port is free (Windows-safe, dual-stack)."""
     _free_port(port)
-    
-    server = HTTPServer(('localhost', port), SalesforceCallbackHandler)
+
+    # Try dual-stack first (bind to '::' so both ::1 and 127.0.0.1 work)
+    server = None
+    last_err = None
+    for attempt in range(3):
+        try:
+            server = ReusableDualStackHTTPServer(('::', port), SalesforceCallbackHandler)
+            break
+        except OSError as e:
+            last_err = e
+            # Fallback: re-attempt after brief pause (handles slow TIME_WAIT release)
+            time.sleep(0.3)
+
+    # If dual-stack binding failed (older OSes), fall back to plain IPv4 on localhost
+    if server is None:
+        for attempt in range(3):
+            try:
+                server = HTTPServer(('localhost', port), SalesforceCallbackHandler)
+                break
+            except OSError as e:
+                last_err = e
+                time.sleep(0.3)
+
+    if server is None:
+        raise OSError(f"Port {port} could not be bound after retries: {last_err}")
+
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
     server_thread.start()
     return server
@@ -106,23 +142,6 @@ def salesforce_custom_login(domain_url: str) -> str:
     clean_domain = domain_url.rstrip('/')
     return _do_login("custom", clean_domain)
 
-@register_tool
-def free_oauth_port(port: int = 1717) -> str:
-    """
-    Manually free the OAuth callback port if needed.
-    Default port is 1717 used for Salesforce OAuth callback.
-    """
-    try:
-        _free_port(port)
-        return _create_json_response(
-            True, 
-            message=f"Port {port} freed successfully"
-        )
-    except Exception as e:
-        return _create_json_response(
-            False, 
-            error=f"Failed to free port {port}: {str(e)}"
-        )
 
 def _do_login(org_type: str, auth_url: str) -> str:
     """Perform OAuth login with automatic port cleanup and guaranteed JSON response"""

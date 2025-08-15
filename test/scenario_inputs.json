@@ -1,0 +1,26 @@
+{
+  "salesforce_sandbox_login": {
+    "selected_user": "PUT_SANDBOX_USERNAME"
+  },
+  "salesforce_production_login": {
+    "selected_user": "PUT_PROD_USERNAME"
+  },
+  "salesforce_custom_login": {
+    "selected_user": "PUT_USERNAME",
+    "domain": "your-custom.my.salesforce.com"
+  },
+  "execute_soql_query": {
+    "soql": "SELECT Id, Name FROM Account ORDER BY CreatedDate DESC LIMIT 1"
+  },
+  "upsert_custom_object": {
+    "deployment_status": "Deployed",
+    "sharing_model": "ReadWrite",
+    "enable_activities": false,
+    "allow_reports": true
+  },
+  "upsert_custom_field": {
+    "required": false,
+    "field_type": "Text",
+    "type_params": "length=80"
+  }
+}
