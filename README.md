@@ -25,7 +25,11 @@
 git clone https://github.com/niteshsinwar/sfmcp && cd sfmcp
 
 # 2) Create & activate venv
-python3.11 -m venv venv
+
+#first check python version:
+python --version
+# Make sure the the python version is greater then  or equal to 3.11
+python -m venv venv
 source venv/bin/activate
 
 # 3) Install deps
@@ -63,7 +67,10 @@ git clone https://github.com/niteshsinwar/sfmcp
 cd sfmcp
 
 # 2) Create & activate venv
-py -3.11 -m venv venv
+#first check python version:
+python --version
+# Make sure the the python version is greater then  or equal to 3.11
+python -m venv venv
 venv\Scripts\activate
 
 # 3) Install deps
